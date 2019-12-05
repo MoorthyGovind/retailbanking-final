@@ -19,7 +19,9 @@ public class AppConstant {
 	public static final String LOGIN_SUCCESSFULLY = "User Login Successfully";
 	public static final String INVALID_LOGIN = "Invalid Username and Password";
 
-	// Transaction Number
+	// Transaction
 	public static final String GET_TRANSACTION_NO_PREFIX = "T-";
+	public static final String OPERATION_SUCCESS = "Operation Succesful";
+	public static final Integer ZERO = 0;
 
 }

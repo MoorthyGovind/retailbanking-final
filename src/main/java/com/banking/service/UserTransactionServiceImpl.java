@@ -1,6 +1,10 @@
 package com.banking.service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
+import javax.persistence.NoResultException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,6 +12,8 @@ import org.springframework.stereotype.Service;
 import com.banking.constant.AppConstant;
 import com.banking.dto.FundTransferRequestDto;
 import com.banking.dto.FundTransferResponseDto;
+import com.banking.dto.UserTransactionRequestDto;
+import com.banking.dto.UserTransactionResponseDto;
 import com.banking.entity.UserAccount;
 import com.banking.entity.UserTransaction;
 import com.banking.repository.UserAccountRepository;
@@ -72,6 +78,50 @@ public class UserTransactionServiceImpl implements UserTransactionService {
 		}
 
 		return fundTransferResponseDto;
+	}
+	
+	/*
+	 * This method is used for to get recent 5 transactions
+	 * input parameter : Integer userAccountId
+	 * return : UserTransactionResponseDto
+	 * throws : NoResultException
+	 */
+	public UserTransactionResponseDto findRecentFiveTransactions(Long userAccountId) throws NoResultException {
+
+		UserTransactionResponseDto userTransactionResponseDto = null;
+		List<UserTransactionRequestDto> response = null;
+		
+		List<UserTransaction> userTransactionResponse = userTransactionRepository
+				.findTop5ByUserAccountIdIdOrderByTransactionDateDesc(userAccountId);
+
+		if (null != userTransactionResponse && userTransactionResponse.size() > AppConstant.ZERO) {
+
+				response = userTransactionResponse.stream().map(temp -> {
+
+				UserTransactionRequestDto obj = new UserTransactionRequestDto();
+				obj.setUserAccountId(temp.getUserAccountId().getId());
+				obj.setTransactionType(temp.getTransactionType());
+				obj.setTransactionDate(temp.getTransactionDate());
+				obj.setTransactionAmount(temp.getTransactionAmount());
+				obj.setCurrentBalance(temp.getCurrentBalanceAmount());
+
+				return obj;
+			}).collect(Collectors.toList());
+
+			userTransactionResponseDto = new UserTransactionResponseDto();
+			userTransactionResponseDto.setMessage(AppConstant.OPERATION_SUCCESS);
+			userTransactionResponseDto.setStatusCode(200);
+			userTransactionResponseDto.setTransactionDetails(response);
+
+			return userTransactionResponseDto;
+			
+		} else {
+			userTransactionResponseDto = new UserTransactionResponseDto();
+			userTransactionResponseDto.setMessage(AppConstant.NO_RECORD_FOUND);
+			userTransactionResponseDto.setStatusCode(404);
+			userTransactionResponseDto.setTransactionDetails(response);
+		}
+		return userTransactionResponseDto;
 	}
 	
 	/**

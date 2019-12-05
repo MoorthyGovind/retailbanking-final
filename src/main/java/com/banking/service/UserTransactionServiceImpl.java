@@ -1,5 +1,6 @@
 package com.banking.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.banking.constant.AppConstant;
 import com.banking.dto.FundTransferRequestDto;
-import com.banking.dto.FundTransferResponseDto;
+import com.banking.dto.ResponseDto;
 import com.banking.dto.UserTransactionRequestDto;
 import com.banking.dto.UserTransactionResponseDto;
 import com.banking.entity.User;
@@ -42,9 +43,8 @@ public class UserTransactionServiceImpl implements UserTransactionService {
 	 * 
 	 */
 	@Override
-	public FundTransferResponseDto fundTransfer(FundTransferRequestDto fundTransferRequestDto)
-			throws NotFoundException {
-		FundTransferResponseDto fundTransferResponseDto = new FundTransferResponseDto();
+	public ResponseDto fundTransfer(FundTransferRequestDto fundTransferRequestDto) throws NotFoundException {
+		ResponseDto fundTransferResponseDto = new ResponseDto();
 		Optional<UserAccount> userAccountDetail = userAccountRepository.findById(fundTransferRequestDto.getAccountId());
 		Optional<UserAccount> userPayeeAccountDetail = userAccountRepository
 				.findById(fundTransferRequestDto.getPayeeAccountId());
@@ -91,10 +91,11 @@ public class UserTransactionServiceImpl implements UserTransactionService {
 	 * Integer userAccountId return : UserTransactionResponseDto throws :
 	 * NoResultException
 	 */
+	@Override
 	public UserTransactionResponseDto findRecentFiveTransactions(Integer userAccountId) throws NoResultException {
 
-		UserTransactionResponseDto userTransactionResponseDto = null;
-		List<UserTransactionRequestDto> response = null;
+		UserTransactionResponseDto userTransactionResponseDto = new UserTransactionResponseDto();
+		List<UserTransactionRequestDto> response = new ArrayList<>();
 
 		List<UserTransaction> userTransactionResponse = userTransactionRepository
 				.findTop5ByUserAccountIdIdOrderByTransactionDateDesc(userAccountId);
@@ -117,7 +118,6 @@ public class UserTransactionServiceImpl implements UserTransactionService {
 				return obj;
 			}).collect(Collectors.toList());
 
-			userTransactionResponseDto = new UserTransactionResponseDto();
 			userTransactionResponseDto.setMessage(AppConstant.OPERATION_SUCCESS);
 			userTransactionResponseDto.setStatusCode(200);
 			userTransactionResponseDto.setTransactionDetails(response);
@@ -125,7 +125,6 @@ public class UserTransactionServiceImpl implements UserTransactionService {
 			return userTransactionResponseDto;
 
 		} else {
-			userTransactionResponseDto = new UserTransactionResponseDto();
 			userTransactionResponseDto.setMessage(AppConstant.NO_RECORD_FOUND);
 			userTransactionResponseDto.setStatusCode(404);
 			userTransactionResponseDto.setTransactionDetails(response);

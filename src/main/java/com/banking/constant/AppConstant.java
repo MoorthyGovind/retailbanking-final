@@ -26,12 +26,11 @@ public class AppConstant {
 	public static final Integer ZERO = 0;
 
 	// user
-	public static final String USER_SUCCESS_MESSAGE = "User Registered Successfully";
+	public static final String REGISTER_SUCCESS_MESSAGE = "User Registered Successfully";
 
 	// UserRegisterDto
-	public static Long ACCOUNT_NUMBER_PREFIX = 160001029300L;
-	public static Double ACCOUNT_MINIMUM_BALANCE = 500.00;
-	public static Double ACCOUNT_BALANCE_AMOUNT = 3000.00;
+	public static final Double ACCOUNT_MINIMUM_BALANCE = 500.00;
+	public static final Double ACCOUNT_BALANCE_AMOUNT = 3000.00;
 	public static final String FIRST_NAME_ERROR_MESSAGE = "firstName should be mandatory";
 	public static final String EMAIL_ERROR_MESSAGE = "Email address should be mandatory";
 	public static final String EMAIL_ADDRESS_ERROR_MESSAGE = "Invalid Email address";
@@ -40,12 +39,10 @@ public class AppConstant {
 	public static final String DOB_INVALID = "Invalid dob.";
 
 	public static final String ADDRESS_ERROR_MESSAGE = "address1 should be mandatory";
-	public static final String PASSWORD_ERROR_MESSAGE = "password should be mandatory";
 	public static final String LOGIN_SUCCESS_MESSAGE = "Login Success";
 	public static final String LOGIN_ERROR_MESSAGE = "Login failed";
 	public static final String USER_EXIST = "User Already Exist";
 
 	public static final String AGE_ERROR_MESSAGE = "User should not have less than 18 years to open account";
-	public static final String CHECK_PASSWORD = "Check your password";
 
 }

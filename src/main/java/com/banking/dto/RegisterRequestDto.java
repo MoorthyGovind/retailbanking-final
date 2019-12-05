@@ -22,7 +22,7 @@ public class RegisterRequestDto {
 
 	/*
 	 * @Pattern(regexp = "yyyy-MM-dd", message = AppConstant.DOB_INVALID)
-	 */	private String dob;
+	 */ private String dob;
 
 	@NotBlank(message = AppConstant.EMAIL_ERROR_MESSAGE)
 	@Email(message = AppConstant.EMAIL_ADDRESS_ERROR_MESSAGE)

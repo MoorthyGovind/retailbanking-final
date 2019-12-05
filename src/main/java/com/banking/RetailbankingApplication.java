@@ -7,7 +7,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class RetailbankingApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(RetailbankingApplication.class, args); //NOSONAR
+		SpringApplication.run(RetailbankingApplication.class, args); // NOSONAR
 	}
-
 }

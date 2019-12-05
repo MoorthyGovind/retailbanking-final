@@ -3,7 +3,6 @@ package com.banking.exception;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-
 /*
  * @author  AKUTHOTA.RAGHU 
  * @version 1.0
@@ -20,16 +19,8 @@ public class UserAlreadyExist extends RuntimeException {
 		super();
 	}
 
-	public UserAlreadyExist(String message, Throwable cause) {
-		super(message, cause);
-	}
-
 	public UserAlreadyExist(String userexist) {
 		super("User Already Exist");
-	}
-
-	public UserAlreadyExist(Long id) {
-		super("User Not not found : " + id);
 	}
 
 }

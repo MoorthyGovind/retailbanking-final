@@ -17,7 +17,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.banking.constant.AppConstant;
 import com.banking.dto.FundTransferRequestDto;
-import com.banking.dto.FundTransferResponseDto;
+import com.banking.dto.ResponseDto;
 import com.banking.entity.UserAccount;
 import com.banking.entity.UserTransaction;
 import com.banking.repository.UserAccountRepository;
@@ -38,7 +38,7 @@ public class UserTransactionServiceImplTest {
 	UserTransactionRepository userTransactionRepository;
 
 	FundTransferRequestDto fundTransferRequestDto = new FundTransferRequestDto();
-	FundTransferResponseDto fundTransferResponseDto = new FundTransferResponseDto();
+	ResponseDto fundTransferResponseDto = new ResponseDto();
 	UserAccount userAccount = new UserAccount();
 
 	@Before
@@ -71,7 +71,7 @@ public class UserTransactionServiceImplTest {
 		when(userAccountRepository.findById(fundTransferRequestDto.getPayeeAccountId()))
 				.thenReturn(optionalPayeeAccount);
 
-		FundTransferResponseDto response = userTransactionServiceImpl.fundTransfer(fundTransferRequestDto);
+		ResponseDto response = userTransactionServiceImpl.fundTransfer(fundTransferRequestDto);
 		assertEquals("SUCCESS", response.getStatus());
 	}
 
@@ -89,7 +89,7 @@ public class UserTransactionServiceImplTest {
 		when(userAccountRepository.findById(fundTransferRequestDto.getPayeeAccountId()))
 				.thenReturn(optionalPayeeAccount);
 
-		FundTransferResponseDto response = userTransactionServiceImpl.fundTransfer(fundTransferRequestDto);
+		ResponseDto response = userTransactionServiceImpl.fundTransfer(fundTransferRequestDto);
 		assertEquals(AppConstant.FAILURE, response.getStatus());
 		assertEquals(AppConstant.FUND_TRANSFER_MIN_BAL, response.getMessage());
 
@@ -101,16 +101,17 @@ public class UserTransactionServiceImplTest {
 		Optional<UserAccount> optionalUserAccount = Optional.of(userAccount);
 
 		when(userAccountRepository.findById(fundTransferRequestDto.getAccountId())).thenReturn(optionalUserAccount);
-		when(userAccountRepository.findById(fundTransferRequestDto.getPayeeAccountId())).thenReturn(Optional.ofNullable(null));
+		when(userAccountRepository.findById(fundTransferRequestDto.getPayeeAccountId()))
+				.thenReturn(Optional.ofNullable(null));
 
 		userTransactionServiceImpl.fundTransfer(fundTransferRequestDto);
 	}
-	
+
 	@Test
 	public void testGetTransactionNumber() {
 		when(userTransactionRepository.findByTransactionId("T-883833")).thenReturn(new UserTransaction());
 		String transactionNumber = userTransactionServiceImpl.getTransactionNumber();
 		assertThat(transactionNumber).isNotNull();
-		
+
 	}
 }

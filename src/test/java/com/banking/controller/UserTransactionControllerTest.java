@@ -14,7 +14,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.banking.constant.AppConstant;
 import com.banking.dto.FundTransferRequestDto;
-import com.banking.dto.FundTransferResponseDto;
+import com.banking.dto.ResponseDto;
 import com.banking.service.UserTransactionService;
 
 import javassist.NotFoundException;
@@ -29,50 +29,52 @@ public class UserTransactionControllerTest {
 	UserTransactionService userTransactionService;
 
 	FundTransferRequestDto fundTransferRequestDto = new FundTransferRequestDto();
-	FundTransferResponseDto fundTransferResponseDto = new FundTransferResponseDto();
-	
+	ResponseDto fundTransferResponseDto = new ResponseDto();
+
 	@Before
 	public void init() {
 		MockitoAnnotations.initMocks(this);
-		
+
 		fundTransferRequestDto.setAccountId(1);
 		fundTransferRequestDto.setPayeeAccountId(2);
 		fundTransferRequestDto.setTransferAmount(2000.00);
 		fundTransferRequestDto.setRemarks("For Hospital Expenses");
 	}
-	
-	
+
 	@Test
 	public void testFundTransfer() throws NotFoundException {
 		fundTransferResponseDto.setStatus(AppConstant.SUCCESS);
 		fundTransferResponseDto.setMessage(AppConstant.FUND_TRANSFER_SUCCESS);
 		fundTransferResponseDto.setStatusCode(200);
-		
+
 		when(userTransactionService.fundTransfer(fundTransferRequestDto)).thenReturn(fundTransferResponseDto);
-		
-		ResponseEntity<FundTransferResponseDto> response = userTransactionController.fundTransfer(fundTransferRequestDto);
+
+		ResponseEntity<ResponseDto> response = userTransactionController
+				.fundTransfer(fundTransferRequestDto);
 		assertEquals("SUCCESS", response.getBody().getStatus());
 		assertEquals(200, response.getBody().getStatusCode());
 	}
-	
+
 	@Test
 	public void testFundTransferForFailure() throws NotFoundException {
 		fundTransferResponseDto.setStatus(AppConstant.FAILURE);
 		fundTransferResponseDto.setMessage(AppConstant.FUND_TRANSFER_ERROR);
 		fundTransferResponseDto.setStatusCode(400);
-		
+
 		when(userTransactionService.fundTransfer(fundTransferRequestDto)).thenReturn(fundTransferResponseDto);
-		
-		ResponseEntity<FundTransferResponseDto> response = userTransactionController.fundTransfer(fundTransferRequestDto);
+
+		ResponseEntity<ResponseDto> response = userTransactionController
+				.fundTransfer(fundTransferRequestDto);
 		assertEquals("FAILURE", response.getBody().getStatus());
 		assertEquals(400, response.getBody().getStatusCode());
 	}
-	
+
 	@Test
 	public void testFundTransferForBadRequest() throws NotFoundException {
-		when(userTransactionService.fundTransfer(fundTransferRequestDto)).thenReturn(new FundTransferResponseDto());
-		
-		ResponseEntity<FundTransferResponseDto> response = userTransactionController.fundTransfer(fundTransferRequestDto);
+		when(userTransactionService.fundTransfer(fundTransferRequestDto)).thenReturn(new ResponseDto());
+
+		ResponseEntity<ResponseDto> response = userTransactionController
+				.fundTransfer(fundTransferRequestDto);
 		assertEquals("FAILURE", response.getBody().getStatus());
 		assertEquals(400, response.getBody().getStatusCode());
 	}

@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.banking.constant.AppConstant;
 import com.banking.dto.FundTransferRequestDto;
-import com.banking.dto.FundTransferResponseDto;
+import com.banking.dto.ResponseDto;
 import com.banking.dto.UserTransactionResponseDto;
 import com.banking.service.UserTransactionService;
 
@@ -52,10 +52,10 @@ public class UserTransactionController {
 	 */
 	@CrossOrigin(origins = "*", allowedHeaders = "*")
 	@PostMapping
-	public ResponseEntity<FundTransferResponseDto> fundTransfer(
+	public ResponseEntity<ResponseDto> fundTransfer(
 			@Valid @RequestBody FundTransferRequestDto fundTransferRequestDto) throws NotFoundException {
 		logger.info("fund transaction ");
-		FundTransferResponseDto fundTransferResponseDto = userTransactionService.fundTransfer(fundTransferRequestDto);
+		ResponseDto fundTransferResponseDto = userTransactionService.fundTransfer(fundTransferRequestDto);
 		// Check the response status is success or not.
 		Optional<String> isSuccess = Optional.ofNullable(fundTransferResponseDto.getStatus());
 		if (isSuccess.isPresent()) {

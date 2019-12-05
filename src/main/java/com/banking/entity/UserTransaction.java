@@ -23,14 +23,14 @@ public class UserTransaction {
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_account_id")
 	private UserAccount userAccountId;
-	
+
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "payee_account_id")
 	private UserAccount payeeAccountId;
 
 	@Column(name = "transaction_type")
 	private String transactionType;
-	
+
 	@Column(name = "transaction_id")
 	private String transactionId;
 
@@ -61,7 +61,7 @@ public class UserTransaction {
 	public void setUserAccountId(UserAccount userAccountId) {
 		this.userAccountId = userAccountId;
 	}
-	
+
 	public UserAccount getPayeeAccountId() {
 		return payeeAccountId;
 	}

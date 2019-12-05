@@ -13,8 +13,10 @@ import com.banking.entity.UserTransaction;
  * ConverterUtil - ConverterUtil mainly used for converting the objects to
  * another object
  * 
- * @author Govindasamy.C Created Date - 05-12-2019
+ * @author Govindasamy.C
+ * @since - 05-12-2019
  */
+
 public class ConverterUtil {
 
 	private ConverterUtil() {

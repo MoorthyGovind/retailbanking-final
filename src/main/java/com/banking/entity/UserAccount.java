@@ -10,7 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-
 @Entity
 @Table(name = "user_account")
 @SequenceGenerator(name = "sequence", initialValue = 10)

@@ -27,16 +27,17 @@ public class LoginController {
 
 	@Autowired
 	LoginService loginService;
-	
+
 	/**
 	 * This is the login user method,it is used to login the application
+	 * 
 	 * @param userLoginDto
 	 * @return
 	 */
 
-	@PostMapping("")
-	public ResponseEntity<LoginResponseDto> login(@RequestBody LoginDto userLoginDto) {
-		LoginResponseDto responseDto = loginService.login(userLoginDto);
+	@PostMapping
+	public ResponseEntity<LoginResponseDto> login(@RequestBody LoginDto loginDto) {
+		LoginResponseDto responseDto = loginService.login(loginDto);
 		if (responseDto.getStatus().equals(AppConstant.SUCCESS)) {
 			responseDto.setStatusCode(HttpStatus.OK.value());
 		} else {

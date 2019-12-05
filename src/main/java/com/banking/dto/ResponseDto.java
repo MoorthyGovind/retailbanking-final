@@ -8,7 +8,7 @@ package com.banking.dto;
  * @version V1.1
  * @created date - 04-12-2019
  */
-public class FundTransferResponseDto {
+public class ResponseDto {
 
 	private String status;
 	private Integer statusCode;

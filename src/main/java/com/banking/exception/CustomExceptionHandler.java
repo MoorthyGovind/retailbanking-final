@@ -16,7 +16,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.banking.constant.AppConstant;
-import com.banking.dto.FundTransferResponseDto;
+import com.banking.dto.ResponseDto;
 
 import javassist.NotFoundException;
 
@@ -48,13 +48,13 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 		body.put("errors", errors);
 		return new ResponseEntity<>(body, headers, status);
 	}
-	
+
 	@ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<FundTransferResponseDto> handleNoRecordFoundException(NotFoundException ex) {
-		FundTransferResponseDto fundTransferResponseDto = new FundTransferResponseDto();
+	public ResponseEntity<ResponseDto> handleNoRecordFoundException(NotFoundException ex) {
+		ResponseDto fundTransferResponseDto = new ResponseDto();
 		fundTransferResponseDto.setMessage(ex.getMessage());
 		fundTransferResponseDto.setStatus(AppConstant.FAILURE);
 		fundTransferResponseDto.setStatusCode(HttpStatus.NOT_FOUND.value());
 		return new ResponseEntity<>(fundTransferResponseDto, HttpStatus.NOT_FOUND);
-    }
+	}
 }

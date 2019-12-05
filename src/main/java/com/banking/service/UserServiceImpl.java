@@ -41,10 +41,10 @@ public class UserServiceImpl implements UserService {
 	 */
 
 	@Override
-	public RegisterResponseDto registerUser(RegisterRequestDto userRegisterDto) throws UserAlreadyExist {
+	public RegisterResponseDto registerUser(RegisterRequestDto userRegisterDto) {
 		RegisterResponseDto registerResponseDto = new RegisterResponseDto();
-		User userAccounts = userRepository.findUserByPhone(userRegisterDto.getPhone());
-		Optional<User> optioanlUser = Optional.ofNullable(userAccounts);
+		User isValidUser = userRepository.findUserByPhone(userRegisterDto.getPhone());
+		Optional<User> optioanlUser = Optional.ofNullable(isValidUser);
 		if (!optioanlUser.isPresent()) {
 
 			User user = new User();
@@ -60,15 +60,6 @@ public class UserServiceImpl implements UserService {
 			// convert String to LocalDate
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 			LocalDate userDob = LocalDate.parse(userRegisterDto.getDob(), formatter);
-
-			/*
-			 * if (LocalDate.now().getYear() - userRegisterDto.getDob().getYear() > 18) {
-			 * user.setDob(userRegisterDto.getDob()); } else {
-			 * registerResponseDto.setStatus(AppConstant.FAILURE);
-			 * registerResponseDto.setMessage(AppConstant.AGE_ERROR_MESSAGE); return
-			 * registerResponseDto; }
-			 */
-
 			user.setDob(userDob);
 			user.setEmailAddress(userRegisterDto.getEmailAddress());
 			user.setPanNumber(userRegisterDto.getPanNumber());
@@ -93,7 +84,7 @@ public class UserServiceImpl implements UserService {
 			registerResponseDto.setUserId(user.getUserName());
 			registerResponseDto.setPassword(user.getPassword());
 			registerResponseDto.setStatus(AppConstant.SUCCESS);
-			registerResponseDto.setMessage(AppConstant.USER_SUCCESS_MESSAGE);
+			registerResponseDto.setMessage(AppConstant.REGISTER_SUCCESS_MESSAGE);
 
 		} else {
 			throw new UserAlreadyExist(AppConstant.USER_EXIST);

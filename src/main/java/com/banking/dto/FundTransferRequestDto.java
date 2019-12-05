@@ -9,10 +9,10 @@ package com.banking.dto;
  * @created date - 04-12-2019
  */
 public class FundTransferRequestDto {
-	
+
 	private Integer accountId;
 	private Integer payeeAccountId;
-	
+
 	private Double transferAmount;
 	private String remarks;
 

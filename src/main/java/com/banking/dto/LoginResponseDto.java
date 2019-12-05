@@ -1,40 +1,12 @@
 package com.banking.dto;
 
-public class LoginResponseDto {
-
-	private String status;
-	private Integer statusCode;
-	private String message;
+public class LoginResponseDto extends ResponseDto{
 
 	private Integer accountId;
 	private Long accountNumber;
 	private String accountType;
 
 	private String userName;
-
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
-	public Integer getStatusCode() {
-		return statusCode;
-	}
-
-	public void setStatusCode(Integer statusCode) {
-		this.statusCode = statusCode;
-	}
-
-	public String getMessage() {
-		return message;
-	}
-
-	public void setMessage(String message) {
-		this.message = message;
-	}
 
 	public Integer getAccountId() {
 		return accountId;

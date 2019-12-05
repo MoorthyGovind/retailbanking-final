@@ -1,5 +1,10 @@
 package com.banking.dto;
 
+/**
+ * 
+ * @author Govindasamy.C
+ *
+ */
 public class ViewPayeeDto {
 
 	private Integer accountId;

@@ -35,8 +35,8 @@ public class UserTransactionControllerTest {
 	public void init() {
 		MockitoAnnotations.initMocks(this);
 		
-		fundTransferRequestDto.setAccountId(1L);
-		fundTransferRequestDto.setPayeeAccountId(2L);
+		fundTransferRequestDto.setAccountId(1);
+		fundTransferRequestDto.setPayeeAccountId(2);
 		fundTransferRequestDto.setTransferAmount(2000.00);
 		fundTransferRequestDto.setRemarks("For Hospital Expenses");
 	}

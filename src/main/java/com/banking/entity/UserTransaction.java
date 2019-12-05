@@ -18,11 +18,15 @@ public class UserTransaction {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
-	private Long id;
+	private Integer id;
 
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_account_id")
 	private UserAccount userAccountId;
+	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "payee_account_id")
+	private UserAccount payeeAccountId;
 
 	@Column(name = "transaction_type")
 	private String transactionType;
@@ -42,11 +46,11 @@ public class UserTransaction {
 	@Column(name = "remarks")
 	private String remarks;
 
-	public Long getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -56,6 +60,14 @@ public class UserTransaction {
 
 	public void setUserAccountId(UserAccount userAccountId) {
 		this.userAccountId = userAccountId;
+	}
+	
+	public UserAccount getPayeeAccountId() {
+		return payeeAccountId;
+	}
+
+	public void setPayeeAccountId(UserAccount payeeAccountId) {
+		this.payeeAccountId = payeeAccountId;
 	}
 
 	public String getTransactionType() {

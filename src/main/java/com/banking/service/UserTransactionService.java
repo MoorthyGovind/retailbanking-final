@@ -10,5 +10,5 @@ public interface UserTransactionService {
 
 	public FundTransferResponseDto fundTransfer(FundTransferRequestDto fundTransferRequestDto) throws NotFoundException;
 
-	public UserTransactionResponseDto findRecentFiveTransactions(Long userAccountId);
+	public UserTransactionResponseDto findRecentFiveTransactions(Integer userAccountId);
 }

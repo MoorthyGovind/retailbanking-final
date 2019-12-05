@@ -33,7 +33,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 	/**
 	 * handleMethodArgumentNotValid error handle for @Valid
 	 */
-	/*@Override
+	@Override
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
 			HttpHeaders headers, HttpStatus status, WebRequest request) {
 
@@ -47,7 +47,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 
 		body.put("errors", errors);
 		return new ResponseEntity<>(body, headers, status);
-	}*/
+	}
 	
 	@ExceptionHandler(NotFoundException.class)
     public ResponseEntity<FundTransferResponseDto> handleNoRecordFoundException(NotFoundException ex) {

@@ -6,9 +6,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.banking.entity.UserTransaction;
 
-public interface UserTransactionRepository extends JpaRepository<UserTransaction, Long>{
+public interface UserTransactionRepository extends JpaRepository<UserTransaction, Integer> {
 
 	UserTransaction findByTransactionId(String transactionId);
-	
-	List<UserTransaction> findTop5ByUserAccountIdIdOrderByTransactionDateDesc(Long userAccountId);
+
+	List<UserTransaction> findTop5ByUserAccountIdIdOrderByTransactionDateDesc(Integer userAccountId);
 }

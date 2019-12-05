@@ -7,35 +7,40 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
 
 @Entity
+@Table(name = "user_account")
+@SequenceGenerator(name = "sequence", initialValue = 10)
 public class UserAccount {
+
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
-	private Long id;
-
-	@Column(name = "account_type")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequence")
+	private Integer id;
+	@Column(name = "user_id")
+	private Integer userId;
 	private String accountType;
-
-	@Column(name = "account_number")
-	private String accountNumber;
-
-	@Column(name = "minimum_balance")
+	private Long accountNumber;
 	private Double minimumBalance;
-
-	@Column(name = "balance_amount")
 	private Double balanceAmount;
-
-	@Column(name = "created_date")
 	private LocalDateTime createdDate;
 
-	public Long getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public Integer getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Integer userId) {
+		this.userId = userId;
 	}
 
 	public String getAccountType() {
@@ -46,11 +51,11 @@ public class UserAccount {
 		this.accountType = accountType;
 	}
 
-	public String getAccountNumber() {
+	public Long getAccountNumber() {
 		return accountNumber;
 	}
 
-	public void setAccountNumber(String accountNumber) {
+	public void setAccountNumber(Long accountNumber) {
 		this.accountNumber = accountNumber;
 	}
 
@@ -77,4 +82,5 @@ public class UserAccount {
 	public void setCreatedDate(LocalDateTime createdDate) {
 		this.createdDate = createdDate;
 	}
+
 }

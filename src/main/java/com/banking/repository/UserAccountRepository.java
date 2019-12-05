@@ -1,12 +1,17 @@
 package com.banking.repository;
 
-import java.util.Optional;
+import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import com.banking.entity.UserAccount;
 
-public interface UserAccountRepository extends JpaRepository<UserAccount, Long>{
+@Repository
+public interface UserAccountRepository extends JpaRepository<UserAccount, Integer> {
 
-	Optional<UserAccount> findById(Long id);
+	UserAccount findByUserId(Integer userId);
+
+	List<UserAccount> findAllByIdNot(Integer accountId);
+
 }

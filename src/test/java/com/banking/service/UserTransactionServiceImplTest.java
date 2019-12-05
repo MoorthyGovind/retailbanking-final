@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -46,13 +45,13 @@ public class UserTransactionServiceImplTest {
 	public void init() {
 		MockitoAnnotations.initMocks(this);
 
-		fundTransferRequestDto.setAccountId(1L);
-		fundTransferRequestDto.setPayeeAccountId(2L);
+		fundTransferRequestDto.setAccountId(1);
+		fundTransferRequestDto.setPayeeAccountId(2);
 		fundTransferRequestDto.setTransferAmount(2000.00);
 		fundTransferRequestDto.setRemarks("For Hospital Expenses");
 
-		userAccount.setId(1L);
-		userAccount.setAccountNumber("607383878844");
+		userAccount.setId(1);
+		userAccount.setAccountNumber(607383878844L);
 		userAccount.setAccountType("Savings");
 		userAccount.setBalanceAmount(10000.00);
 		userAccount.setMinimumBalance(1000.00);
@@ -64,7 +63,7 @@ public class UserTransactionServiceImplTest {
 		Optional<UserAccount> optionalUserAccount = Optional.of(userAccount);
 
 		UserAccount payeeAccount = new UserAccount();
-		payeeAccount.setId(2L);
+		payeeAccount.setId(2);
 		payeeAccount.setBalanceAmount(3000.00);
 		Optional<UserAccount> optionalPayeeAccount = Optional.of(payeeAccount);
 
@@ -82,7 +81,7 @@ public class UserTransactionServiceImplTest {
 		Optional<UserAccount> optionalUserAccount = Optional.of(userAccount);
 
 		UserAccount payeeAccount = new UserAccount();
-		payeeAccount.setId(2L);
+		payeeAccount.setId(2);
 		payeeAccount.setBalanceAmount(3000.00);
 		Optional<UserAccount> optionalPayeeAccount = Optional.of(payeeAccount);
 

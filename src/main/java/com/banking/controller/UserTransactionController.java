@@ -71,23 +71,28 @@ public class UserTransactionController {
 		}
 		return new ResponseEntity<>(fundTransferResponseDto, HttpStatus.OK);
 	}
-	
-	/*
-	 * This method is used for to get recent 5 transactions
-	 * input parameter : Integer userAccountId
-	 * return : UserTransactionResponseDto
-	 * throws : NoResultException
-	 */
-	@GetMapping("/{userAccountId}")
-	public UserTransactionResponseDto getRecentFiveTransactions(@PathVariable Long userAccountId) throws NoResultException {
 
-		UserTransactionResponseDto userTransactionResponse = userTransactionService.findRecentFiveTransactions(userAccountId);
-		
-		if(userTransactionResponse == null) {
+	/*
+	 * This method is used for to get recent 5 transactions input parameter :
+	 * Integer userAccountId return : UserTransactionResponseDto throws :
+	 * NoResultException
+	 */
+
+	@CrossOrigin(origins = "*", allowedHeaders = "*")
+
+	@GetMapping("/{userAccountId}")
+	public UserTransactionResponseDto getRecentFiveTransactions(@PathVariable Integer userAccountId)
+			throws NoResultException {
+
+		UserTransactionResponseDto userTransactionResponse = userTransactionService
+				.findRecentFiveTransactions(userAccountId);
+
+		if (userTransactionResponse == null) {
 			logger.info(" UserTransactionController - getRecentFiveTransactions - No Record Found ");
 			throw new NoResultException(AppConstant.NO_RECORD_FOUND);
 		}
-		
+
 		return userTransactionResponse;
 	}
+
 }

@@ -14,9 +14,11 @@ import com.banking.dto.FundTransferRequestDto;
 import com.banking.dto.FundTransferResponseDto;
 import com.banking.dto.UserTransactionRequestDto;
 import com.banking.dto.UserTransactionResponseDto;
+import com.banking.entity.User;
 import com.banking.entity.UserAccount;
 import com.banking.entity.UserTransaction;
 import com.banking.repository.UserAccountRepository;
+import com.banking.repository.UserRepository;
 import com.banking.repository.UserTransactionRepository;
 import com.banking.util.CommonUtil;
 import com.banking.util.ConverterUtil;
@@ -31,6 +33,9 @@ public class UserTransactionServiceImpl implements UserTransactionService {
 
 	@Autowired
 	UserTransactionRepository userTransactionRepository;
+
+	@Autowired
+	UserRepository userRepository;
 
 	/**
 	 * @throws NotFoundException
@@ -54,12 +59,13 @@ public class UserTransactionServiceImpl implements UserTransactionService {
 				UserTransaction userTransaction = ConverterUtil.convertDtoToTransactionEntity(fundTransferRequestDto);
 				Double debitAmount = userAccount.getBalanceAmount() - fundTransferRequestDto.getTransferAmount();
 				userAccount.setBalanceAmount(debitAmount);
-        
-				//Get Transaction Number
+
+				// Get Transaction Number
 				String transactionNumber = getTransactionNumber();
-				
+
 				userTransaction.setTransactionId(transactionNumber);
 				userTransaction.setUserAccountId(userAccount);
+				userTransaction.setPayeeAccountId(userPayeeAccount);
 				userTransactionRepository.save(userTransaction);
 
 				// Credit the payee acoount balance amount
@@ -79,27 +85,30 @@ public class UserTransactionServiceImpl implements UserTransactionService {
 
 		return fundTransferResponseDto;
 	}
-	
+
 	/*
-	 * This method is used for to get recent 5 transactions
-	 * input parameter : Integer userAccountId
-	 * return : UserTransactionResponseDto
-	 * throws : NoResultException
+	 * This method is used for to get recent 5 transactions input parameter :
+	 * Integer userAccountId return : UserTransactionResponseDto throws :
+	 * NoResultException
 	 */
-	public UserTransactionResponseDto findRecentFiveTransactions(Long userAccountId) throws NoResultException {
+	public UserTransactionResponseDto findRecentFiveTransactions(Integer userAccountId) throws NoResultException {
 
 		UserTransactionResponseDto userTransactionResponseDto = null;
 		List<UserTransactionRequestDto> response = null;
-		
+
 		List<UserTransaction> userTransactionResponse = userTransactionRepository
 				.findTop5ByUserAccountIdIdOrderByTransactionDateDesc(userAccountId);
 
 		if (null != userTransactionResponse && userTransactionResponse.size() > AppConstant.ZERO) {
 
-				response = userTransactionResponse.stream().map(temp -> {
+			response = userTransactionResponse.stream().map(temp -> {
 
 				UserTransactionRequestDto obj = new UserTransactionRequestDto();
-				obj.setUserAccountId(temp.getUserAccountId().getId());
+				Optional<User> user = userRepository.findById(temp.getPayeeAccountId().getUserId());
+				if (user.isPresent()) {
+					obj.setPayeeName(user.get().getFirstName() + " " + user.get().getLastName());
+				}
+				obj.setPayeeAccountNumber(temp.getPayeeAccountId().getAccountNumber());
 				obj.setTransactionType(temp.getTransactionType());
 				obj.setTransactionDate(temp.getTransactionDate());
 				obj.setTransactionAmount(temp.getTransactionAmount());
@@ -114,7 +123,7 @@ public class UserTransactionServiceImpl implements UserTransactionService {
 			userTransactionResponseDto.setTransactionDetails(response);
 
 			return userTransactionResponseDto;
-			
+
 		} else {
 			userTransactionResponseDto = new UserTransactionResponseDto();
 			userTransactionResponseDto.setMessage(AppConstant.NO_RECORD_FOUND);
@@ -123,21 +132,22 @@ public class UserTransactionServiceImpl implements UserTransactionService {
 		}
 		return userTransactionResponseDto;
 	}
-	
+
 	/**
 	 * get the transaction number
+	 * 
 	 * @return
 	 */
 	public String getTransactionNumber() {
 		Integer transactionId = CommonUtil.getTransactionNumber();
 		String transactionNumber = AppConstant.GET_TRANSACTION_NO_PREFIX + transactionId;
-		
+
 		UserTransaction userTransaction = userTransactionRepository.findByTransactionId(transactionNumber);
 		Optional<UserTransaction> isUserTransaction = Optional.ofNullable(userTransaction);
-		if(isUserTransaction.isPresent()) {
+		if (isUserTransaction.isPresent()) {
 			getTransactionNumber();
 		}
 		return transactionNumber;
-		
+
 	}
 }

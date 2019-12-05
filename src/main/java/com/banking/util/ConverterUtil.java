@@ -1,11 +1,12 @@
 package com.banking.util;
 
 import java.time.LocalDate;
-import java.util.Random;
-import java.util.stream.IntStream;
 
 import com.banking.constant.AppConstant;
 import com.banking.dto.FundTransferRequestDto;
+import com.banking.dto.ViewPayeeDto;
+import com.banking.entity.User;
+import com.banking.entity.UserAccount;
 import com.banking.entity.UserTransaction;
 
 /**
@@ -29,9 +30,17 @@ public class ConverterUtil {
 		UserTransaction userTransaction = new UserTransaction();
 		userTransaction.setTransactionDate(LocalDate.now());
 		userTransaction.setTransactionAmount(fundTransferRequestDto.getTransferAmount());
-		userTransaction.setTransactionType(AppConstant.ACCOUNT_TYPE);
+		userTransaction.setTransactionType(AppConstant.TRANSACTION_TYPE);
 		userTransaction.setCurrentBalanceAmount(0.00);
 		userTransaction.setRemarks(fundTransferRequestDto.getRemarks());
 		return userTransaction;
+	}
+
+	public static ViewPayeeDto convertTransactionToPayeeDto(UserAccount userAccount, User user) {
+		ViewPayeeDto viewPayeeDto = new ViewPayeeDto();
+		viewPayeeDto.setAccountId(userAccount.getId());
+		viewPayeeDto.setAccountNumber(userAccount.getAccountNumber());
+		viewPayeeDto.setPayeeName(user.getFirstName() + " " + user.getLastName());
+		return viewPayeeDto;
 	}
 }

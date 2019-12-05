@@ -1,6 +1,5 @@
 package com.banking.dto;
 
-import java.sql.Timestamp;
 import java.time.LocalDate;
 
 import lombok.AllArgsConstructor;
@@ -19,18 +18,27 @@ import lombok.ToString;
 @ToString
 public class UserTransactionRequestDto {
 
-	private Long userAccountId;
+	private String payeeName;
+	private Long payeeAccountNumber;
 	private String transactionType;
 	private LocalDate transactionDate;
 	private Double transactionAmount;
 	private Double currentBalance;
 
-	public Long getUserAccountId() {
-		return userAccountId;
+	public String getPayeeName() {
+		return payeeName;
 	}
 
-	public void setUserAccountId(Long userAccountId) {
-		this.userAccountId = userAccountId;
+	public void setPayeeName(String payeeName) {
+		this.payeeName = payeeName;
+	}
+
+	public Long getPayeeAccountNumber() {
+		return payeeAccountNumber;
+	}
+
+	public void setPayeeAccountNumber(Long payeeAccountNumber) {
+		this.payeeAccountNumber = payeeAccountNumber;
 	}
 
 	public String getTransactionType() {

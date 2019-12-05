@@ -10,25 +10,25 @@ package com.banking.dto;
  */
 public class FundTransferRequestDto {
 	
-	private Long accountId;
-	private Long payeeAccountId;
+	private Integer accountId;
+	private Integer payeeAccountId;
 	
 	private Double transferAmount;
 	private String remarks;
 
-	public Long getAccountId() {
+	public Integer getAccountId() {
 		return accountId;
 	}
 
-	public void setAccountId(Long accountId) {
+	public void setAccountId(Integer accountId) {
 		this.accountId = accountId;
 	}
 
-	public Long getPayeeAccountId() {
+	public Integer getPayeeAccountId() {
 		return payeeAccountId;
 	}
 
-	public void setPayeeAccountId(Long payeeAccountId) {
+	public void setPayeeAccountId(Integer payeeAccountId) {
 		this.payeeAccountId = payeeAccountId;
 	}
 

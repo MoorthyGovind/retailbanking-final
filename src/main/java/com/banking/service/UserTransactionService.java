@@ -10,5 +10,7 @@ public interface UserTransactionService {
 
 	public ResponseDto fundTransfer(FundTransferRequestDto fundTransferRequestDto) throws NotFoundException;
 
+	public UserTransactionResponseDto findUserTransactionsByMonth(Integer userAccountId, Integer month, Integer year);
+
 	public UserTransactionResponseDto findRecentFiveTransactions(Integer userAccountId);
 }

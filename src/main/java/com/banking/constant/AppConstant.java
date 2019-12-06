@@ -24,6 +24,7 @@ public class AppConstant {
 	public static final String GET_TRANSACTION_NO_PREFIX = "T-";
 	public static final String OPERATION_SUCCESS = "Operation Succesful";
 	public static final Integer ZERO = 0;
+	public static final String OPERATION_FAILD = "Operation Failed";
 
 	// user
 	public static final String REGISTER_SUCCESS_MESSAGE = "User Registered Successfully";

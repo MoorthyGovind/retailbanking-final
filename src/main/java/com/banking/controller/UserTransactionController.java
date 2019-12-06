@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.banking.constant.AppConstant;
@@ -52,8 +53,8 @@ public class UserTransactionController {
 	 */
 	@CrossOrigin(origins = "*", allowedHeaders = "*")
 	@PostMapping
-	public ResponseEntity<ResponseDto> fundTransfer(
-			@Valid @RequestBody FundTransferRequestDto fundTransferRequestDto) throws NotFoundException {
+	public ResponseEntity<ResponseDto> fundTransfer(@Valid @RequestBody FundTransferRequestDto fundTransferRequestDto)
+			throws NotFoundException {
 		logger.info("fund transaction ");
 		ResponseDto fundTransferResponseDto = userTransactionService.fundTransfer(fundTransferRequestDto);
 		// Check the response status is success or not.
@@ -86,6 +87,30 @@ public class UserTransactionController {
 
 		UserTransactionResponseDto userTransactionResponse = userTransactionService
 				.findRecentFiveTransactions(userAccountId);
+
+		if (userTransactionResponse == null) {
+			logger.info(" UserTransactionController - getRecentFiveTransactions - No Record Found ");
+			throw new NoResultException(AppConstant.NO_RECORD_FOUND);
+		}
+
+		return userTransactionResponse;
+	}
+
+	/*
+	 * This method is used for to get recent 5 transactions
+	 * 
+	 * @param : Integer userAccountId
+	 * 
+	 * @return : UserTransactionResponseDto
+	 * 
+	 * @throws : NoResultException
+	 */
+	@PostMapping("/{userAccountId}")
+	public UserTransactionResponseDto getUserTransactionsByMonth(@PathVariable Integer userAccountId,
+			@RequestParam("month") Integer month, @RequestParam("year") Integer year) throws NoResultException {
+
+		UserTransactionResponseDto userTransactionResponse = userTransactionService
+				.findUserTransactionsByMonth(userAccountId, month, year);
 
 		if (userTransactionResponse == null) {
 			logger.info(" UserTransactionController - getRecentFiveTransactions - No Record Found ");

@@ -65,5 +65,15 @@ public class UserControllerTest {
 		ResponseEntity<RegisterResponseDto> response = userController.registerUser(requestDto);
 		assertEquals(AppConstant.FAILURE, response.getBody().getStatus());
 	}
+	
+	@Test
+	public void testRegisterUserForException() {
+		requestDto.setPhone("85454545");
+		
+		responseDto.setStatus(AppConstant.FAILURE);
+		when(userService.registerUser(requestDto)).thenReturn(responseDto);
 
+		ResponseEntity<RegisterResponseDto> response = userController.registerUser(requestDto);
+		assertEquals(AppConstant.FAILURE, response.getBody().getStatus());
+	}
 }

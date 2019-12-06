@@ -1,6 +1,5 @@
 package com.banking.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -91,44 +90,15 @@ public class UserTransactionServiceImpl implements UserTransactionService {
 	 * Integer userAccountId return : UserTransactionResponseDto throws :
 	 * NoResultException
 	 */
-	@Override
 	public UserTransactionResponseDto findRecentFiveTransactions(Integer userAccountId) throws NoResultException {
 
-		UserTransactionResponseDto userTransactionResponseDto = new UserTransactionResponseDto();
-		List<UserTransactionRequestDto> response = new ArrayList<>();
+		UserTransactionResponseDto userTransactionResponseDto = null;
 
 		List<UserTransaction> userTransactionResponse = userTransactionRepository
 				.findTop5ByUserAccountIdIdOrderByTransactionDateDesc(userAccountId);
 
-		if (null != userTransactionResponse && userTransactionResponse.size() > AppConstant.ZERO) {
+		userTransactionResponseDto = convertUserTransactionEntityToUserTransactionResponseDto(userTransactionResponse);
 
-			response = userTransactionResponse.stream().map(temp -> {
-
-				UserTransactionRequestDto obj = new UserTransactionRequestDto();
-				Optional<User> user = userRepository.findById(temp.getPayeeAccountId().getUserId());
-				if (user.isPresent()) {
-					obj.setPayeeName(user.get().getFirstName() + " " + user.get().getLastName());
-				}
-				obj.setPayeeAccountNumber(temp.getPayeeAccountId().getAccountNumber());
-				obj.setTransactionType(temp.getTransactionType());
-				obj.setTransactionDate(temp.getTransactionDate());
-				obj.setTransactionAmount(temp.getTransactionAmount());
-				obj.setCurrentBalance(temp.getCurrentBalanceAmount());
-
-				return obj;
-			}).collect(Collectors.toList());
-
-			userTransactionResponseDto.setMessage(AppConstant.OPERATION_SUCCESS);
-			userTransactionResponseDto.setStatusCode(200);
-			userTransactionResponseDto.setTransactionDetails(response);
-
-			return userTransactionResponseDto;
-
-		} else {
-			userTransactionResponseDto.setMessage(AppConstant.NO_RECORD_FOUND);
-			userTransactionResponseDto.setStatusCode(404);
-			userTransactionResponseDto.setTransactionDetails(response);
-		}
 		return userTransactionResponseDto;
 	}
 
@@ -148,5 +118,76 @@ public class UserTransactionServiceImpl implements UserTransactionService {
 		}
 		return transactionNumber;
 
+	}
+
+	/**
+	 * this method is to get entire month transactions to respective userAccountId
+	 * 
+	 * @return UserTransactionResponseDto
+	 */
+	public UserTransactionResponseDto findUserTransactionsByMonth(Integer userAccountId, Integer month, Integer year)
+			throws NoResultException {
+
+		UserTransactionResponseDto userTransactionResponseDto = null;
+		String searchCriteria = "";
+
+		if (month < 9) {
+			String monthWithZero = "0" + month;
+			searchCriteria = "" + year + "-" + monthWithZero + "";
+		} else {
+			searchCriteria = "" + year + "-" + month + "";
+		}
+
+		List<UserTransaction> userTransactionResponse = userTransactionRepository
+				.findByMatchMonthAndMatchDay(userAccountId, searchCriteria);
+
+		userTransactionResponseDto = convertUserTransactionEntityToUserTransactionResponseDto(userTransactionResponse);
+
+		return userTransactionResponseDto;
+	}
+
+	/**
+	 * this is private method it is used for Entity to DtoResponse converts -
+	 * written in single separate method for code re-use
+	 * 
+	 * @return UserTransactionResponseDto
+	 */
+	private UserTransactionResponseDto convertUserTransactionEntityToUserTransactionResponseDto(
+			List<UserTransaction> userTransactionResponse) {
+
+		UserTransactionResponseDto userTransactionResponseDto = null;
+		List<UserTransactionRequestDto> response = null;
+
+		if (null != userTransactionResponse && userTransactionResponse.size() > AppConstant.ZERO) {
+
+			response = userTransactionResponse.stream().map(temp -> {
+
+				UserTransactionRequestDto obj = new UserTransactionRequestDto();
+				Optional<User> user = userRepository.findById(temp.getPayeeAccountId().getUserId());
+				if (user.isPresent()) {
+					obj.setPayeeName(user.get().getFirstName() + " " + user.get().getLastName());
+				}
+				obj.setPayeeAccountNumber(temp.getPayeeAccountId().getAccountNumber());
+				obj.setTransactionType(temp.getTransactionType());
+				obj.setTransactionDate(temp.getTransactionDate());
+				obj.setTransactionAmount(temp.getTransactionAmount());
+
+				return obj;
+			}).collect(Collectors.toList());
+
+			userTransactionResponseDto = new UserTransactionResponseDto();
+			userTransactionResponseDto.setMessage(AppConstant.OPERATION_SUCCESS);
+			userTransactionResponseDto.setStatusCode(200);
+			userTransactionResponseDto.setTransactionDetails(response);
+
+			return userTransactionResponseDto;
+
+		} else {
+			userTransactionResponseDto = new UserTransactionResponseDto();
+			userTransactionResponseDto.setMessage(AppConstant.NO_RECORD_FOUND);
+			userTransactionResponseDto.setStatusCode(404);
+			userTransactionResponseDto.setTransactionDetails(response);
+		}
+		return userTransactionResponseDto;
 	}
 }

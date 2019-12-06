@@ -1,12 +1,17 @@
 package com.banking.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,6 +23,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.banking.constant.AppConstant;
 import com.banking.dto.FundTransferRequestDto;
 import com.banking.dto.ResponseDto;
+import com.banking.dto.UserTransactionResponseDto;
 import com.banking.entity.UserAccount;
 import com.banking.entity.UserTransaction;
 import com.banking.repository.UserAccountRepository;
@@ -41,6 +47,11 @@ public class UserTransactionServiceImplTest {
 	ResponseDto fundTransferResponseDto = new ResponseDto();
 	UserAccount userAccount = new UserAccount();
 
+	UserTransaction userTransaction1 = new UserTransaction();
+	UserTransaction userTransaction2 = new UserTransaction();
+	UserTransactionResponseDto userTransactionResponseDto = new UserTransactionResponseDto();
+
+	List<UserTransaction> userTransactions = new ArrayList<>();
 	@Before
 	public void init() {
 		MockitoAnnotations.initMocks(this);
@@ -56,6 +67,19 @@ public class UserTransactionServiceImplTest {
 		userAccount.setBalanceAmount(10000.00);
 		userAccount.setMinimumBalance(1000.00);
 		userAccount.setCreatedDate(LocalDateTime.now());
+		
+		userTransaction1.setTransactionAmount(2500.00);
+		userTransaction1.setId(1231231);
+		userTransaction1.setTransactionDate(LocalDate.of(2019, 12, 04));
+		userTransaction1.setTransactionType("SAVING");
+		
+		userTransaction2.setTransactionAmount(2500.00);
+		userTransaction2.setId(1231231);
+		userTransaction2.setTransactionDate(LocalDate.of(2019, 12, 04));
+		userTransaction2.setTransactionType("SAVING");
+		
+		userTransactions.add(0, userTransaction1);
+		userTransactions.add(1, userTransaction2);
 	}
 
 	@Test
@@ -113,5 +137,23 @@ public class UserTransactionServiceImplTest {
 		String transactionNumber = userTransactionServiceImpl.getTransactionNumber();
 		assertThat(transactionNumber).isNotNull();
 
+	}
+	
+	@Test
+	public void testFindRecentFiveTransactions(){
+		when(userTransactionRepository.findTop5ByUserAccountIdIdOrderByTransactionDateDesc(userAccount.getId())).thenReturn(userTransactions);
+		
+		List<UserTransaction> userTransactions = userTransactionRepository.findTop5ByUserAccountIdIdOrderByTransactionDateDesc(userAccount.getId());
+		  assertNotNull(userTransactions); 
+		  Assert.assertEquals(2, userTransactions.size());
+	}
+	
+	@Test
+	public void testFindUserTransactionsByMonth(){
+		
+		when(userTransactionRepository.findByMatchMonthAndMatchDay(userAccount.getId(), "%2019-12%")).thenReturn(userTransactions);
+		List<UserTransaction> userTransactions = userTransactionRepository.findByMatchMonthAndMatchDay(userAccount.getId(), "%2019-12%");
+		  Assert.assertNotNull(userTransactions); 
+		  Assert.assertEquals(2, userTransactions.size());
 	}
 }

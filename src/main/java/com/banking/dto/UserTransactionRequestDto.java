@@ -23,7 +23,6 @@ public class UserTransactionRequestDto {
 	private String transactionType;
 	private LocalDate transactionDate;
 	private Double transactionAmount;
-	private Double currentBalance;
 
 	public String getPayeeName() {
 		return payeeName;
@@ -63,13 +62,5 @@ public class UserTransactionRequestDto {
 
 	public void setTransactionAmount(Double transactionAmount) {
 		this.transactionAmount = transactionAmount;
-	}
-
-	public Double getCurrentBalance() {
-		return currentBalance;
-	}
-
-	public void setCurrentBalance(Double currentBalance) {
-		this.currentBalance = currentBalance;
 	}
 }
